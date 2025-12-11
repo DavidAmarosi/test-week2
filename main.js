@@ -15,8 +15,9 @@ while (choice != "4"){
          
     }
     if (choice == "2"){
-        let givenPrice = input("Please select a given price   ")
-        while (givenPrice ){}
+        let givenPrice = +input("Please select a given price   ")
+        while (!Number.isInteger(givenPrice)){
+            givenPrice = +input("Please select a given price:  only numbers ")}
         let above = input("For prices above, press True. For prices below, press False:   ")
         filterStocksByPrice(+givenPrice, above)
     }

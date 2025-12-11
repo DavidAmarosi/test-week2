@@ -20,20 +20,23 @@ export function searchStock(identifier) {
 
 export function filterStocksByPrice(givenPrice, above) {
   let newstocks = [];
-  if (above) {
+  if (above == true) {
     for (let index = 0; index < stockMarket.stocks.length; index++) {
       if (stockMarket.stocks[index].currentPrice > givenPrice) {
         newstocks.push(stockMarket.stocks[index]);
       }
     }
+    return newstocks
   }
-  if (!above) {
+  else if (above == false) {
     for (let index = 0; index < stockMarket.stocks.length; index++) {
       if (stockMarket.stocks[index].currentPrice < givenPrice) {
         newstocks.push(stockMarket.stocks[index]);
       }
     }
-  }else{console.log("You didn't make the right choice");
+    return newstocks
+  } 
+  else {console.log("You didn't make the right choice");
   }
   if (newstocks.length == 0) {
     return [newstocks, givenPrice];
@@ -54,17 +57,24 @@ export function OperateOnStock(operation, identifier) {
         let number_of_units = input(
           "Please, how many units are you interested in buying?"
         );
-        while (stockMarket.stocks[index].availableStocks > number_of_units) {
+        
+        while (stockMarket.stocks[index].availableStocks < Number(number_of_units)) {
           console.log(
             `These are the number of units left: ${stockMarket.stocks[index].availableStocks} Please choose a matching number`
           );
           number_of_units = input("Please, how many units are you interested in buying?"
           );
         }
-        stock.availableStocks -= number_of_units
+        let Previous_price = stock.currentPrice
+        stock.availableStocks -= Number(number_of_units)
         stock.previousPrices.push(stockMarket.stocks[index].currentPrice)
-        stock.currentPrice *= 1.05
+        let Current_price = stock.currentPrice *= 1.05
         stockMarket.lastUpdated = new Date()
+
+        console.log(`The purchase was successful, the current price of the stock is: ${Current_price},The previous price of the stock is: ${Previous_price}, The time is${stockMarket.lastUpdated}`);
+        
+        
+        
         for (let index = 0; index < stockMarket.stocks.length; index++) {
            if (stock.category == stockMarket.stocks[index].category){
             stockMarket.stocks[index].category *= 1.01
@@ -87,10 +97,13 @@ export function OperateOnStock(operation, identifier) {
         let number_of_units = input(
           "Please, how many units are you interested in selling?"
         );
-        stock.availableStocks += number_of_units
+        let Previous_price = stock.currentPrice
+        stock.availableStocks += +number_of_units
         stock.previousPrices.push(stockMarket.stocks[index].currentPrice)
-        stock.currentPrice *= 0.95
+        let Current_price = stock.currentPrice *= 0.95
         stockMarket.lastUpdated = new Date()
+        console.log(`The sale was successful, the current price of the stock is:${Current_price},  The previous price of the stock is:${Previous_price} The time is${stockMarket.lastUpdated}`);
+        
         for (let index = 0; index < stockMarket.stocks.length; index++) {
            if (stock.category == stockMarket.stocks[index].category){
             stockMarket.stocks[index].category *= 0.99
@@ -104,7 +117,7 @@ export function OperateOnStock(operation, identifier) {
       console.log("The ID you provided was not found.");
     }
   }
-  if (operation != "buy" || operation != "sell") {
+  else {
     console.log(
       "You have requested an illegal action that cannot be performed."
     );
