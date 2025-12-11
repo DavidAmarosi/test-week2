@@ -1,6 +1,6 @@
 import { log } from "console";
 import { stockMarket } from "./data.js";
-import { input } from "analiza-sync";
+import  input from "analiza-sync";
 
 export function searchStock(identifier) {
   let newstocks = [];
@@ -33,6 +33,7 @@ export function filterStocksByPrice(givenPrice, above) {
         newstocks.push(stockMarket.stocks[index]);
       }
     }
+  }else{console.log("You didn't make the right choice");
   }
   if (newstocks.length == 0) {
     return [newstocks, givenPrice];
@@ -49,6 +50,7 @@ export function OperateOnStock(operation, identifier) {
         stockMarket.stocks[index].name == identifier
       ) {
         sum += 1;
+        let  stock = stockMarket.stocks[index]
         let number_of_units = input(
           "Please, how many units are you interested in buying?"
         );
@@ -59,10 +61,15 @@ export function OperateOnStock(operation, identifier) {
           number_of_units = input("Please, how many units are you interested in buying?"
           );
         }
-        stockMarket.stocks[index].availableStocks -= number_of_units
-        stockMarket.stocks[index].previousPrices.push(stockMarket.stocks[index].currentPrice)
-        stockMarket.stocks[index].currentPrice *= 1.05
+        stock.availableStocks -= number_of_units
+        stock.previousPrices.push(stockMarket.stocks[index].currentPrice)
+        stock.currentPrice *= 1.05
         stockMarket.lastUpdated = new Date()
+        for (let index = 0; index < stockMarket.stocks.length; index++) {
+           if (stock.category == stockMarket.stocks[index].category){
+            stockMarket.stocks[index].category *= 1.01
+           }
+        }
       }
     }
     if (sum == 0) {
@@ -76,13 +83,20 @@ export function OperateOnStock(operation, identifier) {
         stockMarket.stocks[index].name == identifier
       ) {
         sum += 1;
+        let  stock = stockMarket.stocks[index]
         let number_of_units = input(
           "Please, how many units are you interested in selling?"
         );
-        stockMarket.stocks[index].availableStocks += number_of_units
-        stockMarket.stocks[index].previousPrices.push(stockMarket.stocks[index].currentPrice)
-        stockMarket.stocks[index].currentPrice *= 0.95
+        stock.availableStocks += number_of_units
+        stock.previousPrices.push(stockMarket.stocks[index].currentPrice)
+        stock.currentPrice *= 0.95
         stockMarket.lastUpdated = new Date()
+        for (let index = 0; index < stockMarket.stocks.length; index++) {
+           if (stock.category == stockMarket.stocks[index].category){
+            stockMarket.stocks[index].category *= 0.99
+           }
+        }
+        
 
       }
     }
