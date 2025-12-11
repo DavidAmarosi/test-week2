@@ -19,7 +19,8 @@ while (choice != "4"){
         while (!Number.isInteger(givenPrice)){
             givenPrice = +input("Please select a given price:  only numbers ")}
         let above = input("For prices above, press True. For prices below, press False:   ")
-        filterStocksByPrice(+givenPrice, above)
+         console.log(filterStocksByPrice(+givenPrice, above));
+        
     }
     if (choice == "3"){
         let operation = input("If you want to buy Anna, click buy and if you want to sell Anna, click sell: ")

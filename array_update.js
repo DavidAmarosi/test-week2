@@ -20,7 +20,8 @@ export function searchStock(identifier) {
 
 export function filterStocksByPrice(givenPrice, above) {
   let newstocks = [];
-  if (above == true) {
+  above = (above === "true")
+  if (above) {
     for (let index = 0; index < stockMarket.stocks.length; index++) {
       if (stockMarket.stocks[index].currentPrice > givenPrice) {
         newstocks.push(stockMarket.stocks[index]);
@@ -28,7 +29,7 @@ export function filterStocksByPrice(givenPrice, above) {
     }
     return newstocks
   }
-  else if (above == false) {
+  else if (!above) {
     for (let index = 0; index < stockMarket.stocks.length; index++) {
       if (stockMarket.stocks[index].currentPrice < givenPrice) {
         newstocks.push(stockMarket.stocks[index]);
